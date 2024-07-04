@@ -46,6 +46,7 @@ async function seed() {
         title: "Getting Started with Node.js",
         slug: "getting-started-with-nodejs",
         content: "This is a sample post about Node.js...",
+        excerpt: "Learn the basics of Node.js in this introductory post.",
         author: adminUser._id,
         categories: [categories[0]._id],
         tags: [tags[1]._id],
@@ -55,6 +56,8 @@ async function seed() {
         title: "MongoDB Basics",
         slug: "mongodb-basics",
         content: "Learn the basics of MongoDB...",
+        excerpt:
+          "Discover the fundamentals of MongoDB in this comprehensive guide.",
         author: adminUser._id,
         categories: [categories[0]._id],
         tags: [tags[2]._id],
