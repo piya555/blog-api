@@ -109,7 +109,7 @@ const buildMenuTree = (
 
   return children.map((child) => ({
     ...child.toJSON(),
-    children: buildMenuTree(items, child._id.toString()),
+    children: buildMenuTree(items, child.id.toString()),
   })) as IMenuItem[];
 };
 

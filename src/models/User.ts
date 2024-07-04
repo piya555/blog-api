@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUser extends Document {
+  id: string;
   username: string;
   email: string;
   password: string;
@@ -18,7 +19,18 @@ const UserSchema: Schema = new Schema(
     role: { type: String, enum: ["user", "admin"], default: "user" },
     avatar: { type: String },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform(doc, ret, options) {
+        ret.id = ret._id.toHexString();
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
 );
 
 UserSchema.pre<IUser>("save", async function (next) {

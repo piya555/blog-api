@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IMenuItem extends Document {
-  _id: mongoose.Types.ObjectId;
+  id: string;
   title: string;
   url: string;
   order: number;
@@ -18,8 +18,15 @@ const MenuItemSchema: Schema = new Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform(doc, ret, options) {
+        ret.id = ret._id.toHexString();
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
   }
 );
 
