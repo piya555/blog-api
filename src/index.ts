@@ -2,10 +2,17 @@ import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
+import swaggerUi from "swagger-ui-express";
 import config from "./config/config";
 import { connectDB } from "./config/database";
+import swaggerSpec from "./config/swagger";
 import authRoutes from "./routes/authRoutes";
+import bannerRoutes from "./routes/bannerRoutes";
+import commentRoutes from "./routes/commentRoutes";
+import menuRoutes from "./routes/menuRoutes";
+import pageRoutes from "./routes/pageRoutes";
 import postRoutes from "./routes/postRoutes";
+import tagRoutes from "./routes/tagRoutes";
 import userRoutes from "./routes/userRoutes";
 import logger from "./utils/logger";
 
@@ -27,6 +34,13 @@ app.use(limiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/pages", pageRoutes);
+app.use("/api/tags", tagRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/menus", menuRoutes);
+app.use("/api/banners", bannerRoutes);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -40,4 +54,7 @@ connectDB();
 // Start server
 app.listen(config.port, () => {
   logger.info(`Server is running on port ${config.port}`);
+  logger.info(
+    `Swagger docs available at http://localhost:${config.port}/api-docs`
+  );
 });

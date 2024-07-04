@@ -1,6 +1,7 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
 import User from "../models/User";
+import logger from "../utils/logger";
 
 export const getProfile = async (req: AuthRequest, res: Response) => {
   try {
@@ -10,6 +11,7 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
     }
     res.json(user);
   } catch (error) {
+    logger.error("Error fetching user profile", { error });
     res.status(500).json({ message: "Error fetching user profile", error });
   }
 };
@@ -22,30 +24,61 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
       { username, email },
       { new: true, runValidators: true }
     ).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    logger.info(`User profile updated: ${user.email}`);
     res.json(user);
   } catch (error) {
+    logger.error("Error updating user profile", { error });
     res.status(500).json({ message: "Error updating user profile", error });
   }
 };
 
-export const changePassword = async (req: AuthRequest, res: Response) => {
+export const deleteAccount = async (req: AuthRequest, res: Response) => {
   try {
-    const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.userId);
+    const user = await User.findByIdAndDelete(req.userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const isMatch = await user.comparePassword(currentPassword);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Current password is incorrect" });
-    }
-    user.password = newPassword;
-    await user.save();
-    res.json({ message: "Password updated successfully" });
+
+    logger.info(`User account deleted: ${user.email}`);
+    res.json({ message: "User account deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error changing password", error });
+    logger.error("Error deleting user account", { error });
+    res.status(500).json({ message: "Error deleting user account", error });
+  }
+};
+
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (error) {
+    logger.error("Error fetching users", { error });
+    res.status(500).json({ message: "Error fetching users", error });
+  }
+};
+
+export const updateUserRole = async (req: Request, res: Response) => {
+  try {
+    const { role } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    logger.info(`User role updated: ${user.email}, New role: ${role}`);
+    res.json(user);
+  } catch (error) {
+    logger.error("Error updating user role", { error });
+    res.status(500).json({ message: "Error updating user role", error });
   }
 };

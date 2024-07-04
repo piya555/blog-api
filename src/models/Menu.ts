@@ -1,10 +1,12 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IMenuItem extends Document {
+  _id: mongoose.Types.ObjectId;
   title: string;
   url: string;
   order: number;
   parent?: mongoose.Types.ObjectId;
+  children?: IMenuItem[];
 }
 
 const MenuItemSchema: Schema = new Schema(
@@ -14,7 +16,19 @@ const MenuItemSchema: Schema = new Schema(
     order: { type: Number, default: 0 },
     parent: { type: Schema.Types.ObjectId, ref: "MenuItem" },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
-export default mongoose.model<IMenuItem>("MenuItem", MenuItemSchema);
+MenuItemSchema.virtual("children", {
+  ref: "MenuItem",
+  localField: "_id",
+  foreignField: "parent",
+});
+
+const MenuItem = mongoose.model<IMenuItem>("MenuItem", MenuItemSchema);
+
+export default MenuItem;
