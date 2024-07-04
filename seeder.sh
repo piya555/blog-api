@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 
 # Wait for MongoDB to be ready
 echo "Waiting for MongoDB to be ready..."
-until mongo --host mongo --eval "print(\"waited for connection\")"
+until nc -z mongo 27017
 do
+    echo "MongoDB is unavailable - sleeping"
     sleep 1
 done
+
+echo "MongoDB is up - executing command"
 
 # Run the seed script
 echo "Running seed script..."

@@ -1,6 +1,9 @@
 # Use an official Node runtime as the parent image
 FROM node:18-alpine
 
+# Install netcat
+RUN apk add --no-cache netcat-openbsd
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
@@ -15,6 +18,11 @@ COPY . .
 
 # Build the TypeScript code
 RUN yarn build
+
+RUN yarn add sharp --ignore-engines 
+
+# Make seeder.sh executable
+RUN chmod +x seeder.sh
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000

@@ -8,6 +8,7 @@ import { connectDB } from "./config/database";
 import swaggerSpec from "./config/swagger";
 import authRoutes from "./routes/authRoutes";
 import bannerRoutes from "./routes/bannerRoutes";
+import categoryRoute from "./routes/categoryRoutes";
 import commentRoutes from "./routes/commentRoutes";
 import menuRoutes from "./routes/menuRoutes";
 import pageRoutes from "./routes/pageRoutes";
@@ -39,6 +40,7 @@ app.use("/api/tags", tagRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/menus", menuRoutes);
 app.use("/api/banners", bannerRoutes);
+app.use("/api/categories", categoryRoute);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

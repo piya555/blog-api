@@ -12,7 +12,7 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./uploads:/app/uploads
+      - uploads-data:/app/uploads
 
   mongo:
     image: mongo:6.0
@@ -23,11 +23,15 @@ services:
 
   seeder:
     build: .
-    command: sh -c "./seeder.sh"
+    command: sh -c "yarn build && ./seeder.sh"
     environment:
       - MONGODB_URI=mongodb://mongo:27017/blog_api
+      - JWT_SECRET=your_jwt_secret_here
+      - NODE_ENV=production
+      - UPLOAD_DIR=../uploads
     depends_on:
       - mongo
 
 volumes:
   mongo-data:
+  uploads-data:
