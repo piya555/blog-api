@@ -4,14 +4,15 @@ services:
   app:
     build: .
     ports:
-      - "8888:3000"
+      - "3000:3000"
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://mongo:27017/blog_api
       - JWT_SECRET=your_jwt_secret_here
-      - UPLOAD_DIR=./uploads
     depends_on:
       - mongo
+    volumes:
+      - ./uploads:/app/uploads
 
   mongo:
     image: mongo:6.0
@@ -19,6 +20,14 @@ services:
       - mongo-data:/data/db
     ports:
       - "27017:27017"
+
+  seeder:
+    build: .
+    command: sh -c "./seeder.sh"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/blog_api
+    depends_on:
+      - mongo
 
 volumes:
   mongo-data:
