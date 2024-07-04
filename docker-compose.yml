@@ -4,11 +4,12 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "8888:3000"
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://mongo:27017/blog_api
       - JWT_SECRET=your_jwt_secret_here
+      - UPLOAD_DIR=./uploads
     depends_on:
       - mongo
 
