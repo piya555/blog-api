@@ -25,6 +25,9 @@ export const processImage =
       Date.now() + "-" + Math.round(Math.random() * 1e9) + ".webp";
     const filepath = path.join(config.uploadDir, filename);
 
+    console.log("Upload directory:", config.uploadDir);
+    console.log("Saving file to:", filepath);
+
     try {
       await sharp(req.file.buffer)
         .resize(width, height, {

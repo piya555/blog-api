@@ -12,7 +12,7 @@ services:
     depends_on:
       - mongo
     volumes:
-      - uploads-data:/app/uploads
+      - uploads-data:/app/public/uploads
 
   mongo:
     image: mongo:6.0
@@ -28,7 +28,7 @@ services:
       - MONGODB_URI=mongodb://mongo:27017/blog_api
       - JWT_SECRET=your_jwt_secret_here
       - NODE_ENV=production
-      - UPLOAD_DIR=../uploads
+      - UPLOAD_DIR=./public/uploads
     depends_on:
       - mongo
 
