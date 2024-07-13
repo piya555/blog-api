@@ -182,17 +182,17 @@ router.get("/", getPosts);
 
 /**
  * @swagger
- * /api/posts/{slug}:
+ * /api/posts/{id}:
  *   get:
- *     summary: Get a post by slug
+ *     summary: Get a post by id
  *     tags: [Posts]
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The post slug
+ *         description: The post id
  *     responses:
  *       200:
  *         description: The post details
@@ -205,11 +205,11 @@ router.get("/", getPosts);
  *       500:
  *         description: Server error
  */
-router.get("/:slug", getPost);
+router.get("/:id", getPost);
 
 /**
  * @swagger
- * /api/posts/{slug}:
+ * /api/posts/{id}:
  *   put:
  *     summary: Update a post
  *     tags: [Posts]
@@ -217,11 +217,11 @@ router.get("/:slug", getPost);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The post slug
+ *         description: The post id
  *     requestBody:
  *       required: true
  *       content:
@@ -263,7 +263,7 @@ router.get("/:slug", getPost);
  *         description: Server error
  */
 router.put(
-  "/:slug",
+  "/:id",
   auth,
   uploadAndProcessImage("thumbnail", 1200, 630),
   updatePost
@@ -271,7 +271,7 @@ router.put(
 
 /**
  * @swagger
- * /api/posts/{slug}:
+ * /api/posts/{id}:
  *   delete:
  *     summary: Delete a post
  *     tags: [Posts]
@@ -279,11 +279,11 @@ router.put(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The post slug
+ *         description: The post id
  *     responses:
  *       200:
  *         description: The post was deleted
@@ -294,11 +294,11 @@ router.put(
  *       500:
  *         description: Server error
  */
-router.delete("/:slug", auth, deletePost);
+router.delete("/:id", auth, deletePost);
 
 /**
  * @swagger
- * /api/posts/{slug}/toggle-publish:
+ * /api/posts/{id}/toggle-publish:
  *   patch:
  *     summary: Toggle post publish status
  *     tags: [Posts]
@@ -306,11 +306,11 @@ router.delete("/:slug", auth, deletePost);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The post slug
+ *         description: The post id
  *     responses:
  *       200:
  *         description: The post publish status was toggled
@@ -330,7 +330,7 @@ router.delete("/:slug", auth, deletePost);
  *       500:
  *         description: Server error
  */
-router.patch("/:slug/toggle-publish", auth, togglePostPublish);
+router.patch("/:id/toggle-publish", auth, togglePostPublish);
 
 /**
  * @swagger

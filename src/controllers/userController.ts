@@ -94,3 +94,23 @@ export const updateUserRole = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error updating user role", error });
   }
 };
+
+export const updateUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const { username, email } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, {
+      username,
+      email,
+    }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    logger.info(`User profile updated: ${user.email}`);
+    res.json(user);
+  } catch (error) {
+    logger.error("Error updating user profile", { error });
+    res.status(500).json({ message: "Error updating user profile", error });
+  }
+};

@@ -6,10 +6,12 @@ import Tag from "../models/Tag";
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, slug } = req.body;
     const post = new Post({
       title,
+      slug,
       content,
+      thumbnail: req.body.thumbnail,
       author: req.userId,
     });
     await post.save();
@@ -64,6 +66,8 @@ export const updatePost = async (req: AuthRequest, res: Response) => {
 
 export const deletePost = async (req: AuthRequest, res: Response) => {
   try {
+    console.log(req.userId);
+    console.log(req.params.id);
     const post = await Post.findOneAndDelete({
       _id: req.params.id,
       author: req.userId,

@@ -5,6 +5,7 @@ import {
   getProfile,
   getUsers,
   updateProfile,
+  updateUser,
   updateUserRole,
 } from "../controllers/userController";
 import { auth } from "../middleware/authMiddleware";
@@ -168,6 +169,45 @@ router.delete("/delete-account", auth, deleteAccount);
  *         description: Server error
  */
 router.get("/", auth, isAdmin, getUsers);
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update user (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Username or email already exists
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+router.put("/:id", auth, isAdmin, updateUser);
 
 /**
  * @swagger
