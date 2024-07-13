@@ -22,6 +22,8 @@ RUN yarn build
 RUN yarn add sharp --ignore-engines 
 
 # Make seeder.sh executable
+COPY seeder.sh ./
+
 RUN chmod +x seeder.sh
 
 # Make port 3000 available to the world outside this container
