@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  createUser,
   deleteAccount,
   getProfile,
   getUsers,
@@ -212,5 +213,48 @@ router.get("/", auth, isAdmin, getUsers);
  *         description: Server error
  */
 router.put("/:id/role", auth, isAdmin, updateUserRole);
+
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Create new user (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Username or email already exists
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+router.post("/", auth, isAdmin, createUser);
 
 export default router;

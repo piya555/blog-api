@@ -16,6 +16,18 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const { username, email, password } = req.body;
+    const user = new User({ username, email, password });
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    logger.error("Error creating user", { error });
+    res.status(500).json({ message: "Error creating user", error });
+  }
+};
+
 export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
     const { username, email } = req.body;
