@@ -10,7 +10,7 @@ export const createPage = async (req: Request, res: Response) => {
       slug,
       content,
       isPublished: isPublished || false,
-      thumbnail: req.body.thumbnail, // This will be set by the upload middleware if an image was uploaded
+      thumbnail: req.body.thumbnail,
     });
 
     await page.save();
@@ -39,7 +39,7 @@ export const getPages = async (req: Request, res: Response) => {
 
 export const getPage = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOne({ id: req.params.id });
+    const page = await Page.findById(req.params.id);
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }
@@ -60,7 +60,7 @@ export const updatePage = async (req: Request, res: Response) => {
     }
 
     const page = await Page.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       updateData,
       { new: true, runValidators: true }
     );
@@ -79,7 +79,7 @@ export const updatePage = async (req: Request, res: Response) => {
 
 export const deletePage = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOneAndDelete({ slug: req.params.id });
+    const page = await Page.findOneAndDelete({ _id: req.params.id });
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }
@@ -115,7 +115,7 @@ export const searchPages = async (req: Request, res: Response) => {
 
 export const togglePagePublish = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOne({ slug: req.params.id });
+    const page = await Page.findById(req.params.id);
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }
