@@ -39,7 +39,7 @@ export const getPages = async (req: Request, res: Response) => {
 
 export const getPage = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOne({ slug: req.params.slug });
+    const page = await Page.findOne({ id: req.params.id });
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }
@@ -60,7 +60,7 @@ export const updatePage = async (req: Request, res: Response) => {
     }
 
     const page = await Page.findOneAndUpdate(
-      { slug: req.params.slug },
+      { id: req.params.id },
       updateData,
       { new: true, runValidators: true }
     );
@@ -79,7 +79,7 @@ export const updatePage = async (req: Request, res: Response) => {
 
 export const deletePage = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOneAndDelete({ slug: req.params.slug });
+    const page = await Page.findOneAndDelete({ slug: req.params.id });
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }
@@ -115,7 +115,7 @@ export const searchPages = async (req: Request, res: Response) => {
 
 export const togglePagePublish = async (req: Request, res: Response) => {
   try {
-    const page = await Page.findOne({ slug: req.params.slug });
+    const page = await Page.findOne({ slug: req.params.id });
     if (!page) {
       return res.status(404).json({ message: "Page not found" });
     }

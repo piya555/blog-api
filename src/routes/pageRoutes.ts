@@ -138,17 +138,17 @@ router.get("/", getPages);
 
 /**
  * @swagger
- * /api/pages/{slug}:
+ * /api/pages/{id}:
  *   get:
- *     summary: Get a page by slug
+ *     summary: Get a page by id
  *     tags: [Pages]
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The page slug
+ *         description: The page id
  *     responses:
  *       200:
  *         description: The page details
@@ -161,11 +161,11 @@ router.get("/", getPages);
  *       500:
  *         description: Server error
  */
-router.get("/:slug", getPage);
+router.get("/:id", getPage);
 
 /**
  * @swagger
- * /api/pages/{slug}:
+ * /api/pages/{id}:
  *   put:
  *     summary: Update a page
  *     tags: [Pages]
@@ -173,11 +173,11 @@ router.get("/:slug", getPage);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The page slug
+ *         description: The page id
  *     requestBody:
  *       required: true
  *       content:
@@ -209,7 +209,7 @@ router.get("/:slug", getPage);
  *         description: Server error
  */
 router.put(
-  "/:slug",
+  "/:id",
   auth,
   isAdmin,
   uploadAndProcessImage("thumbnail", 1200, 630),
@@ -218,7 +218,7 @@ router.put(
 
 /**
  * @swagger
- * /api/pages/{slug}:
+ * /api/pages/{id}:
  *   delete:
  *     summary: Delete a page
  *     tags: [Pages]
@@ -226,11 +226,11 @@ router.put(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The page slug
+ *         description: The page id
  *     responses:
  *       200:
  *         description: The page was deleted
@@ -241,11 +241,11 @@ router.put(
  *       500:
  *         description: Server error
  */
-router.delete("/:slug", auth, isAdmin, deletePage);
+router.delete("/:id", auth, isAdmin, deletePage);
 
 /**
  * @swagger
- * /api/pages/{slug}/toggle-publish:
+ * /api/pages/{id}/toggle-publish:
  *   patch:
  *     summary: Toggle page publish status
  *     tags: [Pages]
@@ -253,11 +253,11 @@ router.delete("/:slug", auth, isAdmin, deletePage);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: slug
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The page slug
+ *         description: The page id
  *     responses:
  *       200:
  *         description: The page publish status was toggled
@@ -277,7 +277,7 @@ router.delete("/:slug", auth, isAdmin, deletePage);
  *       500:
  *         description: Server error
  */
-router.patch("/:slug/toggle-publish", auth, isAdmin, togglePagePublish);
+router.patch("/:id/toggle-publish", auth, isAdmin, togglePagePublish);
 
 /**
  * @swagger
